@@ -1,25 +1,24 @@
 package com.example.demokotlin.querys
 
 object ConstantsQuery {
-    const val buscarMusicas= "SELECT " +
+    const val searchMusicasAndTotalLikes= "SELECT " +
             "    MUSICS.id, " +
             "    MUSICS.title, " +
             "    MUSICS.link, " +
             "    MUSICS.THUMBNAIL, " +
             "    COUNT(L.IDUSER) AS totalLikes, " +
-            "    CASE " +
-            "        WHEN L.IDUSER IS NOT NULL THEN 1 " +
-            "        END AS likedUser " +
+            "    0 as likedUser " +
             "FROM " +
             "    MUSICS " +
             "        LEFT JOIN " +
-            "    LIKEMUSICS L ON MUSICS.ID = L.IDMUSIC AND L.IDUSER = :idUser " +
-            "        LEFT JOIN " +
-            "    LIKEMUSICS L2 ON MUSICS.ID = L2.IDMUSIC " +
+            "    LIKEMUSICS L ON MUSICS.ID = L.IDMUSIC " +
             "GROUP BY " +
-            "    MUSICS.id, MUSICS.title, MUSICS.link, MUSICS.THUMBNAIL, l.IDUSER; "
+            "    MUSICS.id " +
+            "ORDER BY MUSICS.ID;"
 
-
-
-
+    const val searchLikedsByUser = "SELECT " +
+            "    * " +
+            "FROM " +
+            "    likemusics " +
+            "where IDUSER = :idUser;"
 }

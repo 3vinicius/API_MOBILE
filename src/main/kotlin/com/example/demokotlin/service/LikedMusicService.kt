@@ -71,7 +71,19 @@ class LikedMusicService (
     fun searchAllMusicsAndLikes(email: String): List<AllMusicLikedAndTotalDto> {
         return try {
             val user = userRepository.findByEmail(email);
-            val musicLikedByUser = musicRepository.findMusics(user.id)
+            val musicLikedByUser = musicRepository.findMusics()
+            val likesByUser =  musicRepository.findLikesByUser(idUser = user.id)
+
+            if (likesByUser.isNotEmpty() && musicLikedByUser.isNotEmpty()){
+                musicLikedByUser.forEach { music ->
+                    likesByUser.forEach{likes ->
+                        if (music.id == likes.idmusic?.id){
+                            music.likedUser = 1
+                        }
+                    }
+                }
+            }
+
             musicLikedByUser
         } catch (ex: Exception){
             throw ex
