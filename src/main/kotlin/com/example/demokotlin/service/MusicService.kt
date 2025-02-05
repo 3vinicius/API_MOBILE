@@ -26,9 +26,15 @@ class MusicService(
     fun insertMusic(title: String, link:String, email:String, thumbnail:String): String{
         return try {
             val user = userRepository.findByEmail(email)
-            val music : Music = Music(title = title,link=link, thumbnail = thumbnail,idUser = user)
-            musicRepository.save(music)
-            ContaintsPhases.REGISTREFULL.returnInfo()
+            val existMusic = musicRepository.existsByLink(link)
+
+            if (!existMusic){
+                val music : Music = Music(title = title,link=link, thumbnail = thumbnail,idUser = user)
+                musicRepository.save(music)
+                ContaintsPhases.REGISTREFULL.returnInfo()
+            } else {
+                ContaintsPhases.MUSICEXIST.returnInfo()
+            }
         } catch (err: Exception) {
             throw err
         }

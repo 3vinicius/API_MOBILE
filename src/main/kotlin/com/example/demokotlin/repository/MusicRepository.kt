@@ -17,4 +17,7 @@ interface MusicRepository : JpaRepository<Music, Int> {
     fun findMusics(): List<AllMusicLikedAndTotalDto>
 
     fun findByLink(link: String): Music
+
+
+    fun existsByLink(link: String): Boolean
 }
